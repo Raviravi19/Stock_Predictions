@@ -17,13 +17,19 @@ stock = st.text_input('Enter Stock Symbol', 'GOOG')
 start = '2012-01-01'
 end = '2022-12-31'
 
-# Download historical stock data using yfinance
-try:
-    data = yf.download(stock, start, end)
-except Exception as e:
-    st.error(f"Error fetching data: {e}")
-    st.stop()
+# Function to fetch stock data with caching
+@st.cache(ttl=3600)  # Cache the data for an hour
+def fetch_stock_data(stock, start, end):
+    try:
+        return yf.download(stock, start, end)
+    except Exception as e:
+        st.error(f"Error fetching data: {e}")
+        return None
 
+# Fetch stock data
+data = fetch_stock_data(stock, start, end)
+if data is None:
+    st.stop()  # Stop execution if data retrieval fails
 
 # Display the downloaded data in Streamlit
 st.subheader('Stock Data')
