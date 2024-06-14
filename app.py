@@ -23,15 +23,20 @@ def fetch_stock_data(stock, start, end):
     try:
         return yf.download(stock, start, end)
     except Exception as e:
+        st.error(f"Error fetching data for {stock} from {start} to {end}: {e}")
         return None
 
 # Fetch stock data
 data = fetch_stock_data(stock, start, end)
 
-# # Handle data retrieval errors outside of the cached function
-# if data is None:
-#     st.error(f"Error fetching data for {stock} from {start} to {end}. Please check the stock symbol.")
-#     st.stop()  # Stop execution if data retrieval fails
+# Handle case where data is None (error occurred during fetching)
+if data is None:
+    st.stop()  # Stop execution if data retrieval fails
+
+# Check if data is empty (no records returned)
+if data.empty:
+    st.error(f"No data fetched for {stock} from {start} to {end}. Please check the stock symbol or date range.")
+    st.stop()  # Stop execution if data is empty
 
 # Display the downloaded data in Streamlit
 st.subheader('Stock Data')
@@ -97,5 +102,3 @@ ax4.set_xlabel('Time')
 ax4.set_ylabel('Price')
 ax4.legend()
 st.pyplot(fig4)
-
-
