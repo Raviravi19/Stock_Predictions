@@ -18,7 +18,12 @@ start = '2012-01-01'
 end = '2022-12-31'
 
 # Download historical stock data using yfinance
-data = yf.download(stock, start, end)
+try:
+    data = yf.download(stock, start, end)
+except Exception as e:
+    st.error(f"Error fetching data: {e}")
+    st.stop()
+
 
 # Display the downloaded data in Streamlit
 st.subheader('Stock Data')
