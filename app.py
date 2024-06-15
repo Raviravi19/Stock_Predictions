@@ -2,10 +2,10 @@ import numpy as np
 import pandas as pd 
 import yfinance as yf
 import streamlit as st
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
 
-model = load_model("Stock Predictions Model.keras")
+model = load_model("Stock Predictions Model.h5")
 
 
 
