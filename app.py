@@ -25,7 +25,8 @@ def fetch_stock_data(stock, start, end):
         st.error(f"Error fetching data for {stock} from {start} to {end}: {e}")
         return None
 
-data = yf.download(stock, start, end)
+# data = yf.download(stock, start, end)
+data = yf.download("SPY AAPL", period="1mo")
 
 st.subheader('Stock Data')
 st.write(data)
